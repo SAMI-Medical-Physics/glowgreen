@@ -24,3 +24,5 @@ See docs here
 Source repo is here
 
 Licence is
+
+github does not have emptys dirs docs/source/_static and docs/source/_templates
