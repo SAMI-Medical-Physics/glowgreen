@@ -20,7 +20,7 @@ sys.path.insert(0, os.path.abspath('../../src/glowgreen/'))
 # -- Project information -----------------------------------------------------
 
 project = 'glowgreen'
-copyright = '2021, Jake Forster and South Australia Medical Imaging'
+copyright = '2022, Jake Forster and South Australia Medical Imaging'
 author = 'Jake Forster'
 
 # The full version, including alpha/beta/rc tags
