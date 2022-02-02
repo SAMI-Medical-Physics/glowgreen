@@ -780,7 +780,7 @@ def cs_patterns() -> pd.DataFrame:
     df = df.append(ignore_index=True, 
         other={'name': 'Sleeping with spouse or partner', 'pattern_type': 'repeating', 'theta': theta, 
         'c': np.array([60, 60, 60, 60, 60, 60, 60, 60, 60, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 60, 60, 60, 60, 60]) / 60., 
-        'd': [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0.1, 0.1], 
+        'd': [0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0.3, 0.3], 
         'dose_constraint': 1., 'per_episode': 0})
 
     df = df.append(df.loc[df['name'] == 'Sleeping with spouse or partner'].assign(**{'name': 'Sleeping with pregnant spouse or partner, or child'}), ignore_index=True)
@@ -819,7 +819,15 @@ def cs_patterns() -> pd.DataFrame:
 
     df = df.append(ignore_index=True, other={'name': 'A single 24-hour trip on public transport', 'pattern_type': 'onceoff', 'theta': 0, 'c': 24, 
         'd': 0.3, 'dose_constraint': 1., 'per_episode': 0})
-    
+
+    df = df.append(ignore_index=True, 
+        other={'name': 'Sleeping with person and close contact during the day', 'pattern_type': 'repeating', 'theta': theta, 
+        'c': np.array([60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60]) / 60., 
+        'd': [0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 1, 1, 1, 1, 1, 1, 0.5, 1, 1, 1, 1, 1, 0.5, 1, 1, 1, 0.3, 0.3], 
+        'dose_constraint': 1., 'per_episode': 0})
+
+    df = df.append(df.loc[df['name'] == 'Sleeping with person and close contact during the day'].assign(**{'name': 'Sleeping with informed person supporting patient and close contact during the day', 'dose_constraint': 5., 'per_episode': 1}), ignore_index=True)
+
     return df
 
 
