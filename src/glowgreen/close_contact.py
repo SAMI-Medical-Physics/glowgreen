@@ -101,11 +101,11 @@ class _ContactPattern:
         if None not in [cfit, dose_constraint] and (admin_datetime is not None or isinstance(self, ContactPatternOnceoff)):
             fig, (ax1, ax2) = plt.subplots(2, 1)
             if name is not None:
-                fig.suptitle(name)
+                fig.suptitle(name, fontsize=11)
         else:
             fig, ax1 = plt.subplots()
             if name is not None:
-                ax1.set_title(name)
+                ax1.set_title(name, fontsize=11)
 
         if isinstance(self, ContactPatternRepeating):
             ax1.bar(self.theta, self.d, width=self.c, align='edge', edgecolor='red', color='red', alpha=0.5, fill=True)
@@ -766,37 +766,43 @@ def cs_patterns() -> pd.DataFrame:
         'dose_constraint': 1., 'per_episode': 0})
 
     df = df.append(ignore_index=True, 
-        other={'name': 'Close contact with 2-5 year old children', 'pattern_type': 'repeating', 'theta': theta, 
+        other={'name': 'Prolonged close contact (>15min) with 2-5 year old children', 'pattern_type': 'repeating', 'theta': theta, 
         'c': np.array([0, 0, 0, 0, 0, 0, 60, 30, 60, 60, 60, 60, 60, 60, 60, 60, 60, 30, 30, 60, 0, 0, 0, 0]) / 60., 
         'd': [0, 0, 0, 0, 0, 0, 0.1, 0.1, 0.1, 1, 1, 1, 1, 1, 1, 1, 1, 0.1, 0.1, 0.1, 0, 0, 0, 0], 
         'dose_constraint': 1., 'per_episode': 0})
 
     df = df.append(ignore_index=True, 
-        other={'name': 'Close contact with 5-15 year old children', 'pattern_type': 'repeating', 'theta': theta, 
+        other={'name': 'Prolonged close contact (>15min) with 5-15 year old children', 'pattern_type': 'repeating', 'theta': theta, 
         'c': np.array([0, 0, 0, 0, 0, 0, 30, 30, 60, 0, 0, 0, 0, 0, 0, 0, 60, 60, 60, 30, 30, 0, 0, 0]) / 60., 
         'd': [0, 0, 0, 0, 0, 0, 0.1, 0.1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0.1, 0.1, 0, 0, 0], 
         'dose_constraint': 1., 'per_episode': 0})
-    
+
     df = df.append(ignore_index=True, 
-        other={'name': 'Sleeping with spouse or partner', 'pattern_type': 'repeating', 'theta': theta, 
+        other={'name': 'Sleeping with another person (includes pregnant or child)', 'pattern_type': 'repeating', 'theta': theta, 
         'c': np.array([60, 60, 60, 60, 60, 60, 60, 60, 60, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 60, 60, 60, 60, 60]) / 60., 
         'd': [0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0.3, 0.3], 
         'dose_constraint': 1., 'per_episode': 0})
-
-    df = df.append(df.loc[df['name'] == 'Sleeping with spouse or partner'].assign(**{'name': 'Sleeping with pregnant spouse or partner, or child'}), ignore_index=True)
-
-    df = df.append(df.loc[df['name'] == 'Sleeping with spouse or partner'].assign(**{'name': 'Sleeping with informed person supporting patient', 'dose_constraint': 5., 'per_episode': 1}), ignore_index=True)
+    
+    df = df.append(df.loc[df['name'] == 'Sleeping with another person (includes pregnant or child)'].assign(**{'name': 'Sleeping with informed supporter', 'dose_constraint': 5., 'per_episode': 1}), ignore_index=True)
 
     df = df.append(ignore_index=True, 
-        other={'name': 'Close contact with adult friends and family', 'pattern_type': 'repeating', 'theta': theta, 
+        other={'name': 'Sleeping with person and prolonged daytime close contact (>15min)', 'pattern_type': 'repeating', 'theta': theta, 
+        'c': np.array([60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60]) / 60., 
+        'd': [0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 1, 1, 1, 1, 1, 1, 0.5, 1, 1, 1, 1, 1, 0.5, 1, 1, 1, 0.3, 0.3], 
+        'dose_constraint': 1., 'per_episode': 0})
+
+    df = df.append(df.loc[df['name'] == 'Sleeping with person and prolonged daytime close contact (>15min)'].assign(**{'name': 'Sleeping with informed supporter and prolonged daytime close contact (>15min)', 'dose_constraint': 5., 'per_episode': 1}), ignore_index=True)
+
+    df = df.append(ignore_index=True, 
+        other={'name': 'Prolonged close contact (>15min) with adult friends and family', 'pattern_type': 'repeating', 'theta': theta, 
         'c': np.array([0, 0, 0, 0, 0, 0, 0, 0, 30, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 30, 60, 60, 0, 0]) / 60., 
         'd': [0, 0, 0, 0, 0, 0, 0, 0, 0.5, 1, 1, 1, 0.5, 1, 1, 1, 1, 1, 0.5, 0.1, 1, 1, 0, 0], 
         'dose_constraint': 1., 'per_episode': 0})
 
-    df = df.append(df.loc[df['name'] == 'Close contact with adult friends and family'].assign(**{'name': 'Close contact with pregnant women'}), ignore_index=True)
+    df = df.append(df.loc[df['name'] == 'Prolonged close contact (>15min) with adult friends and family'].assign(**{'name': 'Prolonged close contact (>15min) with pregnant women'}), ignore_index=True)
 
     df = df.append(ignore_index=True, 
-        other={'name': 'Close contact with informed persons caring for patient', 'pattern_type': 'repeating', 'theta': theta, 
+        other={'name': 'Prolonged close contact (>15min) with informed persons caring for patient', 'pattern_type': 'repeating', 'theta': theta, 
         'c': np.array([0, 0, 0, 0, 0, 0, 30, 30, 60, 0, 0, 30, 30, 60, 0, 0, 60, 60, 60, 30, 30, 0, 0, 0]) / 60., 
         'd': [0, 0, 0, 0, 0, 0, 0.1, 0.5, 1, 0, 0, 0.1, 0.5, 1, 0, 0, 1, 1, 1, 0.5, 0.1, 0, 0, 0], 
         'dose_constraint': 5., 'per_episode': 1})
@@ -808,25 +814,17 @@ def cs_patterns() -> pd.DataFrame:
     df = df.append(ignore_index=True, other={'name': 'Daily public transport to and from work', 'pattern_type': 'repeating', 'theta': [8, 17], 
         'c': [1, 1], 'd': [0.3, 0.3], 'dose_constraint': 1., 'per_episode': 0})
 
-    df = df.append(ignore_index=True, other={'name': 'Return to work involving prolonged close contact with others', 'pattern_type': 'repeating', 
+    df = df.append(ignore_index=True, other={'name': 'Return to work involving prolonged close contact (>15min) with others', 'pattern_type': 'repeating', 
         'theta': [9, 12, 14, 16], 'c': [3, 2, 2, 1], 'd': [0.5, 1, 0.5, 1], 'dose_constraint': 1., 'per_episode': 0})
 
-    df = df.append(df.loc[df['name'] == 'Cinema, theatre visits; social functions'].assign(**{'name': 'Return to work not involving prolonged close contact with others'}), ignore_index=True)
+    df = df.append(df.loc[df['name'] == 'Cinema, theatre visits; social functions'].assign(**{'name': 'Return to work not involving prolonged close contact (>15min) with others'}), ignore_index=True)
 
     df = df.append(df.loc[df['name'] == 'Cinema, theatre visits; social functions'].assign(**{'name': 'Work with radiosensitive materials', 'dose_constraint': 0.1}), ignore_index=True)
 
-    df = df.append(df.loc[df['name'] == 'Return to work involving prolonged close contact with others'].assign(**{'name': 'Return to school'}), ignore_index=True)
+    df = df.append(df.loc[df['name'] == 'Return to work involving prolonged close contact (>15min) with others'].assign(**{'name': 'Return to school'}), ignore_index=True)
 
     df = df.append(ignore_index=True, other={'name': 'A single 24-hour trip on public transport', 'pattern_type': 'onceoff', 'theta': 0, 'c': 24, 
         'd': 0.3, 'dose_constraint': 1., 'per_episode': 0})
-
-    df = df.append(ignore_index=True, 
-        other={'name': 'Sleeping with person and close contact during the day', 'pattern_type': 'repeating', 'theta': theta, 
-        'c': np.array([60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60]) / 60., 
-        'd': [0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 1, 1, 1, 1, 1, 1, 0.5, 1, 1, 1, 1, 1, 0.5, 1, 1, 1, 0.3, 0.3], 
-        'dose_constraint': 1., 'per_episode': 0})
-
-    df = df.append(df.loc[df['name'] == 'Sleeping with person and close contact during the day'].assign(**{'name': 'Sleeping with informed person supporting patient and close contact during the day', 'dose_constraint': 5., 'per_episode': 1}), ignore_index=True)
 
     return df
 

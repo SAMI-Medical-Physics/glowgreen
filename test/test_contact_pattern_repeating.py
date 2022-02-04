@@ -114,7 +114,53 @@ def test_subtract_next_t_r_from():
 	assert cpat._subtract_next_t_r_from(datetime_admin) == -13.75
 
 
-def test_get_dose_exp():
+def test_get_dose_exp_1():
+	dose_rate_init_1m = 50  # uSv/h
+	effective_half_life = 40  # h
+	tau = 0  # h
+
+	# dose calculation by hand
+	dose_hand = dose_rate_init_1m * effective_half_life / (np.log(2) * 1e3)  # uSv -> mSv
+
+	# dose calculation by code
+	theta = 0
+	c = 24
+	d = 1
+	cpat = ContactPatternRepeating(theta, c, d)	
+
+	datetime_admin = datetime(year = 2021, month = 10, day = 25, hour = 10, minute = 0)
+
+	cfit = Clearance_1m('exponential', [dose_rate_init_1m, effective_half_life], 1.)
+
+	dose_code = cpat.get_dose(cfit, tau, datetime_admin)[0]
+
+	assert np.isclose(dose_hand, dose_code)
+
+
+def test_get_dose_exp_2():
+	dose_rate_init_1m = 50  # uSv/h
+	effective_half_life = 40  # h
+	tau = 48  # h
+
+	# dose calculation by hand
+	dose_hand = dose_rate_init_1m * effective_half_life * np.exp(-np.log(2) * tau / effective_half_life) / (np.log(2) * 1e3)  # uSv -> mSv
+
+	# dose calculation by code
+	theta = 0
+	c = 24
+	d = 1
+	cpat = ContactPatternRepeating(theta, c, d)	
+
+	datetime_admin = datetime(year = 2021, month = 10, day = 25, hour = 10, minute = 0)
+
+	cfit = Clearance_1m('exponential', [dose_rate_init_1m, effective_half_life], 1.)
+
+	dose_code = cpat.get_dose(cfit, tau, datetime_admin)[0]
+
+	assert np.isclose(dose_hand, dose_code)
+
+
+def test_get_dose_exp_3():
 	"""Test ContactPatternRepeating.get_dose method with exponential clearance function.
 	
 	Example problem:
@@ -177,9 +223,60 @@ def test_get_dose_exp():
 	assert np.isclose(cpat.get_dose_finite(cfit, tau, 1e9, datetime_admin)[0], dose_hand)
 	assert cpat.get_dose_finite(cfit, 0., 1e9, datetime_admin)[0] == cpat.get_dose(cfit, 0., datetime_admin)[0]
 	assert cpat.get_dose_finite(cfit, 1e9, 1e9, datetime_admin)[0] == 0.
-	
 
-def test_get_dose_biexp():
+
+def test_get_dose_biexp_1():
+	dose_rate_init_1m = 90  # uSv/h
+	fraction1 = 0.3 
+	half_life1 = 5  # h
+	half_life2 = 50  # h
+	tau = 0 # h
+
+	# dose calculation by hand
+	dose_hand = dose_rate_init_1m * (half_life1 * fraction1 + half_life2 * (1.-fraction1)) / (np.log(2) * 1e3)  # uSv -> mSv
+
+	# dose calculation by code
+	theta = 0
+	c = 24
+	d = 1
+	cpat = ContactPatternRepeating(theta, c, d)	
+
+	datetime_admin = datetime(year = 2021, month = 10, day = 25, hour = 10, minute = 0)
+
+	cfit = Clearance_1m('biexponential', [dose_rate_init_1m, fraction1, half_life1, half_life2], 1.)
+
+	dose_code = cpat.get_dose(cfit, tau, datetime_admin)[0]
+
+	assert np.isclose(dose_hand, dose_code)
+
+
+def test_get_dose_biexp_2():
+	dose_rate_init_1m = 90  # uSv/h
+	fraction1 = 0.3 
+	half_life1 = 5  # h
+	half_life2 = 50  # h
+	tau = 48 # h
+
+	# dose calculation by hand
+	dose_hand = dose_rate_init_1m * (half_life1 * fraction1 * np.exp(-np.log(2) * tau / half_life1) \
+		+ half_life2 * (1.-fraction1) * np.exp(-np.log(2) * tau / half_life2)) / (np.log(2) * 1e3)  # uSv -> mSv
+
+	# dose calculation by code
+	theta = 0
+	c = 24
+	d = 1
+	cpat = ContactPatternRepeating(theta, c, d)	
+
+	datetime_admin = datetime(year = 2021, month = 10, day = 25, hour = 10, minute = 0)
+
+	cfit = Clearance_1m('biexponential', [dose_rate_init_1m, fraction1, half_life1, half_life2], 1.)
+
+	dose_code = cpat.get_dose(cfit, tau, datetime_admin)[0]
+
+	assert np.isclose(dose_hand, dose_code)
+
+
+def test_get_dose_biexp_3():
 	"""Test ContactPatternRepeating.get_dose method with biexponential clearance function.
 	
 	Example problem:
