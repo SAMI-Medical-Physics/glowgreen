@@ -101,11 +101,11 @@ class _ContactPattern:
         if None not in [cfit, dose_constraint] and (admin_datetime is not None or isinstance(self, ContactPatternOnceoff)):
             fig, (ax1, ax2) = plt.subplots(2, 1)
             if name is not None:
-                fig.suptitle(name)
+                fig.suptitle(name, fontsize=11)
         else:
             fig, ax1 = plt.subplots()
             if name is not None:
-                ax1.set_title(name)
+                ax1.set_title(name, fontsize=11)
 
         if isinstance(self, ContactPatternRepeating):
             ax1.bar(self.theta, self.d, width=self.c, align='edge', edgecolor='red', color='red', alpha=0.5, fill=True)
