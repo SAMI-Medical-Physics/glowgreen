@@ -120,7 +120,7 @@ class _ContactPattern:
             ax1.bar(self.theta, self.d**(-3/2), width=self.c, align='edge', edgecolor='black', color=(86 / 255, 180 / 255, 233 / 255), fill=True)
             ax1.set_xlabel('Time from end of restriction (h)')
             ax1.set_xlim(left=0.)
-        ax1.set_ylabel("${[(1~\mathrm{m}) ~/~ \mathrm{distance}]}^{1.5}$")
+        ax1.set_ylabel(r"${[(1~\mathrm{m}) ~/~ \mathrm{distance}]}^{1.5}$")
         ax1.set_ylim(bottom=1e-4)
 
         warnings.filterwarnings("ignore", "divide by zero encountered in power")
@@ -758,80 +758,87 @@ def cs_patterns() -> pd.DataFrame:
          * `dose_constraint` (int or float): Dose constraint (mSv).
          * `per_episode` (int): 1 if dose constraint is to be treated as per treatment episode, 0 if per annum.
     """
+    list_of_dicts = []    
     theta = np.linspace(0,23,num=24)
-    c = np.array([0, 0, 0, 20, 0, 0, 0, 20, 30, 40, 30, 20, 30, 40, 30, 20, 30, 40, 30, 20, 0, 0, 0, 35]) / 60.
-    d = [0, 0, 0, 0.1, 0, 0, 0, 0.1, 0.5, 1, 0.5, 0.1, 0.5, 1, 0.5, 0.1, 0.5, 1, 0.5, 0.1, 0, 0, 0, 0.1]
 
-    data = {'name': 'Caring for infants (normal)', 'pattern_type': 'repeating', 
-    'theta': [theta], 'c': [c], 'd': [d], 'dose_constraint': 1., 'per_episode': 0}
-    df = pd.DataFrame(data=data, columns=['name', 'pattern_type', 'theta', 'c', 'd', 'dose_constraint', 'per_episode'])
+    list_of_dicts.append({'name': 'Caring for infants (normal)', 'pattern_type': 'repeating', 
+    'theta': theta, 'c': np.array([0, 0, 0, 20, 0, 0, 0, 20, 30, 40, 30, 20, 30, 40, 30, 20, 30, 40, 30, 20, 0, 0, 0, 35]) / 60., 
+    'd': [0, 0, 0, 0.1, 0, 0, 0, 0.1, 0.5, 1, 0.5, 0.1, 0.5, 1, 0.5, 0.1, 0.5, 1, 0.5, 0.1, 0, 0, 0, 0.1], 
+    'dose_constraint': 1., 'per_episode': 0})
 
-    df = df.append(ignore_index=True, other={'name': 'Caring for infants (demanding or sick)', 
+    list_of_dicts.append({'name': 'Caring for infants (demanding or sick)', 
         'pattern_type': 'repeating', 'theta': theta, 
         'c': np.array([0, 0, 0, 35, 0, 0, 0, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 0, 0, 0, 35]) / 60., 
         'd': [0, 0, 0, 0.1, 0, 0, 0, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0, 0, 0, 0.1], 
         'dose_constraint': 1., 'per_episode': 0})
 
-    df = df.append(ignore_index=True, 
-        other={'name': 'Prolonged close contact (>15min) with 2-5 year old children', 'pattern_type': 'repeating', 'theta': theta, 
+    list_of_dicts.append({'name': 'Prolonged close contact (>15min) with 2-5 year old children', 'pattern_type': 'repeating', 'theta': theta, 
         'c': np.array([0, 0, 0, 0, 0, 0, 60, 30, 60, 60, 60, 60, 60, 60, 60, 60, 60, 30, 30, 60, 0, 0, 0, 0]) / 60., 
         'd': [0, 0, 0, 0, 0, 0, 0.1, 0.1, 0.1, 1, 1, 1, 1, 1, 1, 1, 1, 0.1, 0.1, 0.1, 0, 0, 0, 0], 
         'dose_constraint': 1., 'per_episode': 0})
 
-    df = df.append(ignore_index=True, 
-        other={'name': 'Prolonged close contact (>15min) with 5-15 year old children', 'pattern_type': 'repeating', 'theta': theta, 
+    list_of_dicts.append({'name': 'Prolonged close contact (>15min) with 5-15 year old children', 'pattern_type': 'repeating', 'theta': theta, 
         'c': np.array([0, 0, 0, 0, 0, 0, 30, 30, 60, 0, 0, 0, 0, 0, 0, 0, 60, 60, 60, 30, 30, 0, 0, 0]) / 60., 
         'd': [0, 0, 0, 0, 0, 0, 0.1, 0.1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0.1, 0.1, 0, 0, 0], 
         'dose_constraint': 1., 'per_episode': 0})
 
-    df = df.append(ignore_index=True, 
-        other={'name': 'Sleeping with another person (includes pregnant or child)', 'pattern_type': 'repeating', 'theta': theta, 
+    list_of_dicts.append({'name': 'Sleeping with another person (includes pregnant or child)', 'pattern_type': 'repeating', 'theta': theta, 
         'c': np.array([60, 60, 60, 60, 60, 60, 60, 60, 60, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 60, 60, 60, 60, 60]) / 60., 
         'd': [0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0.3, 0.3], 
         'dose_constraint': 1., 'per_episode': 0})
-    
-    df = df.append(df.loc[df['name'] == 'Sleeping with another person (includes pregnant or child)'].assign(**{'name': 'Sleeping with informed supporter', 'dose_constraint': 5., 'per_episode': 1}), ignore_index=True)
 
-    df = df.append(ignore_index=True, 
-        other={'name': 'Sleeping with person and prolonged daytime close contact (>15min)', 'pattern_type': 'repeating', 'theta': theta, 
+    list_of_dicts.append({'name': 'Sleeping with informed supporter', 'pattern_type': 'repeating', 'theta': theta, 
+        'c': np.array([60, 60, 60, 60, 60, 60, 60, 60, 60, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 60, 60, 60, 60, 60]) / 60., 
+        'd': [0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0.3, 0.3], 
+        'dose_constraint': 5., 'per_episode': 1})
+
+    list_of_dicts.append({'name': 'Sleeping with person and prolonged daytime close contact (>15min)', 'pattern_type': 'repeating', 'theta': theta, 
         'c': np.array([60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60]) / 60., 
         'd': [0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 1, 1, 1, 1, 1, 1, 0.5, 1, 1, 1, 1, 1, 0.5, 1, 1, 1, 0.3, 0.3], 
         'dose_constraint': 1., 'per_episode': 0})
 
-    df = df.append(df.loc[df['name'] == 'Sleeping with person and prolonged daytime close contact (>15min)'].assign(**{'name': 'Sleeping with informed supporter and prolonged daytime close contact (>15min)', 'dose_constraint': 5., 'per_episode': 1}), ignore_index=True)
+    list_of_dicts.append({'name': 'Sleeping with informed supporter and prolonged daytime close contact (>15min)', 'pattern_type': 'repeating', 'theta': theta, 
+        'c': np.array([60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60]) / 60., 
+        'd': [0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 1, 1, 1, 1, 1, 1, 0.5, 1, 1, 1, 1, 1, 0.5, 1, 1, 1, 0.3, 0.3], 
+        'dose_constraint': 5., 'per_episode': 1})
 
-    df = df.append(ignore_index=True, 
-        other={'name': 'Prolonged close contact (>15min) with adult friends and family', 'pattern_type': 'repeating', 'theta': theta, 
+    list_of_dicts.append({'name': 'Prolonged close contact (>15min) with adult friends and family', 'pattern_type': 'repeating', 'theta': theta, 
         'c': np.array([0, 0, 0, 0, 0, 0, 0, 0, 30, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 30, 60, 60, 0, 0]) / 60., 
         'd': [0, 0, 0, 0, 0, 0, 0, 0, 0.5, 1, 1, 1, 0.5, 1, 1, 1, 1, 1, 0.5, 0.1, 1, 1, 0, 0], 
         'dose_constraint': 1., 'per_episode': 0})
 
-    df = df.append(df.loc[df['name'] == 'Prolonged close contact (>15min) with adult friends and family'].assign(**{'name': 'Prolonged close contact (>15min) with pregnant women'}), ignore_index=True)
+    list_of_dicts.append({'name': 'Prolonged close contact (>15min) with pregnant women', 'pattern_type': 'repeating', 'theta': theta, 
+        'c': np.array([0, 0, 0, 0, 0, 0, 0, 0, 30, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 30, 60, 60, 0, 0]) / 60., 
+        'd': [0, 0, 0, 0, 0, 0, 0, 0, 0.5, 1, 1, 1, 0.5, 1, 1, 1, 1, 1, 0.5, 0.1, 1, 1, 0, 0], 
+        'dose_constraint': 1., 'per_episode': 0})
 
-    df = df.append(ignore_index=True, 
-        other={'name': 'Prolonged close contact (>15min) with informed persons caring for patient', 'pattern_type': 'repeating', 'theta': theta, 
+    list_of_dicts.append({'name': 'Prolonged close contact (>15min) with informed persons caring for patient', 'pattern_type': 'repeating', 'theta': theta, 
         'c': np.array([0, 0, 0, 0, 0, 0, 30, 30, 60, 0, 0, 30, 30, 60, 0, 0, 60, 60, 60, 30, 30, 0, 0, 0]) / 60., 
         'd': [0, 0, 0, 0, 0, 0, 0.1, 0.5, 1, 0, 0, 0.1, 0.5, 1, 0, 0, 1, 1, 1, 0.5, 0.1, 0, 0, 0], 
         'dose_constraint': 5., 'per_episode': 1})
 
-    df = df.append(ignore_index=True, 
-        other={'name': 'Cinema, theatre visits; social functions', 'pattern_type': 'repeating', 'theta': 9., 
+    list_of_dicts.append({'name': 'Cinema, theatre visits; social functions', 'pattern_type': 'repeating', 'theta': 9., 
         'c': 8., 'd': 1., 'dose_constraint': 1., 'per_episode': 0})
 
-    df = df.append(ignore_index=True, other={'name': 'Daily public transport to and from work', 'pattern_type': 'repeating', 'theta': [8, 17], 
+    list_of_dicts.append({'name': 'Daily public transport to and from work', 'pattern_type': 'repeating', 'theta': [8, 17], 
         'c': [1, 1], 'd': [0.3, 0.3], 'dose_constraint': 1., 'per_episode': 0})
 
-    df = df.append(ignore_index=True, other={'name': 'Return to work involving prolonged close contact (>15min) with others', 'pattern_type': 'repeating', 
+    list_of_dicts.append({'name': 'Return to work involving prolonged close contact (>15min) with others', 'pattern_type': 'repeating', 
         'theta': [9, 12, 14, 16], 'c': [3, 2, 2, 1], 'd': [0.5, 1, 0.5, 1], 'dose_constraint': 1., 'per_episode': 0})
 
-    df = df.append(df.loc[df['name'] == 'Cinema, theatre visits; social functions'].assign(**{'name': 'Return to work not involving prolonged close contact (>15min) with others'}), ignore_index=True)
+    list_of_dicts.append({'name': 'Return to work not involving prolonged close contact (>15min) with others', 'pattern_type': 'repeating', 'theta': 9., 
+        'c': 8., 'd': 1., 'dose_constraint': 1., 'per_episode': 0})
 
-    df = df.append(df.loc[df['name'] == 'Cinema, theatre visits; social functions'].assign(**{'name': 'Work with radiosensitive materials', 'dose_constraint': 0.1}), ignore_index=True)
+    list_of_dicts.append({'name': 'Work with radiosensitive materials', 'pattern_type': 'repeating', 'theta': 9., 
+        'c': 8., 'd': 1., 'dose_constraint': 0.1, 'per_episode': 0})
 
-    df = df.append(df.loc[df['name'] == 'Return to work involving prolonged close contact (>15min) with others'].assign(**{'name': 'Return to school'}), ignore_index=True)
+    list_of_dicts.append({'name': 'Return to school', 'pattern_type': 'repeating', 
+        'theta': [9, 12, 14, 16], 'c': [3, 2, 2, 1], 'd': [0.5, 1, 0.5, 1], 'dose_constraint': 1., 'per_episode': 0})
 
-    df = df.append(ignore_index=True, other={'name': 'A single 24-hour trip on public transport', 'pattern_type': 'onceoff', 'theta': 0, 'c': 24, 
+    list_of_dicts.append({'name': 'A single 24-hour trip on public transport', 'pattern_type': 'onceoff', 'theta': 0, 'c': 24, 
         'd': 0.3, 'dose_constraint': 1., 'per_episode': 0})
+
+    df = pd.DataFrame.from_records(list_of_dicts)
 
     return df
 
