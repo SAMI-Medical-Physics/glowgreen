@@ -28,6 +28,8 @@ At the top:
     sys.path.insert(0, os.path.abspath('../../src/'))
     sys.path.insert(0, os.path.abspath('../../src/glowgreen/'))
 
+Check the projection information is up-to-date (e.g. version).
+
 And further down:
 
     extensions = ['sphinx.ext.autodoc', 'sphinx.ext.napoleon']

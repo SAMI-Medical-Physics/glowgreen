@@ -3,7 +3,7 @@ A Python package. See the documentation.
 Instructions to generate the documentation are given below. 
 
 ## Requires
-- Python >= 3.9 (for return type hint tupe[])
+- Python >= 3.9 (for return type hint tuple[])
 - Python packages
     - numpy
     - scipy
@@ -35,7 +35,11 @@ In the glowgreen-master directory run:
 
 ## Documentation
 
-Documentation including API reference can be generated using sphinx.
+Documentation including API reference can be generated using sphinx. 
+If the docs/source/ directory does not exist, see howto_documentation.md to generate the documentation from scratch.
+Otherwise, do the following:
+
+Check the Projection information is up-to-date in docs/source/conf.py (e.g. version).
 
 Install sphinx:
 

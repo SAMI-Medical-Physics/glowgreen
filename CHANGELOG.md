@@ -23,5 +23,6 @@ Added restrictions that use this pattern for members of the public and informed 
 ### Added
 
 ### Changed
+- Plot method of contact pattern objects, in particular the plot of the contact pattern: Changed from plotting the contact distance, d, on the vertical axis to plotting d**(-1.5). A secondary yaxis is shown on the right side of the plot with the corresponding d values.
 
 ### Fixed

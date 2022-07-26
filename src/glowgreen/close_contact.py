@@ -108,7 +108,7 @@ class _ContactPattern:
                 ax1.set_title(name, fontsize=11)
 
         if isinstance(self, ContactPatternRepeating):
-            ax1.bar(self.theta, self.d, width=self.c, align='edge', edgecolor='red', color='red', alpha=0.5, fill=True)
+            ax1.bar(self.theta, self.d**(-3/2), width=self.c, align='edge', fill=True, edgecolor='black', color=(0, 158 / 255, 115 / 255))
             ax1.set_xlabel('24-hour time')
             ax1.set_xlim(left=0., right=24.)
             ax1.set_xticks(np.arange(0, 25, 1))
@@ -117,15 +117,22 @@ class _ContactPattern:
                 ax1.annotate('ADMIN', xy=(admin_datetime.hour + admin_datetime.minute/60., 0), xytext=(admin_datetime.hour + admin_datetime.minute/60., 0.2*y_up), 
                     horizontalalignment='center', arrowprops={'arrowstyle':'->'})
         elif isinstance(self, ContactPatternOnceoff):
-            ax1.bar(self.theta, self.d, width=self.c, align='edge', edgecolor='green', color='green', alpha=0.5, fill=True)
+            ax1.bar(self.theta, self.d**(-3/2), width=self.c, align='edge', edgecolor='black', color=(86 / 255, 180 / 255, 233 / 255), fill=True)
             ax1.set_xlabel('Time from end of restriction (h)')
             ax1.set_xlim(left=0.)
-        ax1.set_ylabel('Distance (m)')
+        ax1.set_ylabel("${[(1~\mathrm{m}) ~/~ \mathrm{distance}]}^{1.5}$")
+        ax1.set_ylim(bottom=1e-4)
+
+        warnings.filterwarnings("ignore", "divide by zero encountered in power")
+        secax = ax1.secondary_yaxis('right', functions=(lambda x: x**(-2/3), lambda x: x**(-3/2)))
+        
+        secax.set_yticks(np.unique(self.d))
+        secax.set_ylabel('Distance (m)')
 
         if None not in [cfit, dose_constraint] and (admin_datetime is not None or isinstance(self, ContactPatternOnceoff)):
             _, _, tau_arr, dose_arr, _ = self._get_restriction_arrays(cfit, dose_constraint, admin_datetime)
-            ax2.plot(tau_arr, dose_arr, '.', markerfacecolor='None')
-            ax2.plot(tau_arr, dose_constraint*np.ones(len(tau_arr)), color='r', ls='--', alpha=0.5, label='{:g} mSv'.format(dose_constraint))
+            ax2.plot(tau_arr, dose_arr, 'o', markersize=4, markerfacecolor='None', markeredgecolor="black")
+            ax2.plot(tau_arr, dose_constraint*np.ones(len(tau_arr)), color=(204 / 255, 121 / 255, 167 / 255), ls='--', label='{:g} mSv'.format(dose_constraint))
             ax2.set_xlabel('Delay from time of administration (h)')
             ax2.set_ylabel('Dose (mSv)')
             ax2.set_xlim(left=0.)

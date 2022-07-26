@@ -24,7 +24,7 @@ copyright = '2022, Jake Forster and South Australia Medical Imaging'
 author = 'Jake Forster'
 
 # The full version, including alpha/beta/rc tags
-release = '0.0.2'
+release = '0.0.3'
 
 
 # -- General configuration ---------------------------------------------------
