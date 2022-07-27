@@ -317,7 +317,7 @@ class ContactPatternRepeating(_ContactPattern):
             admin_datetime (datetime.datetime): Administration datetime.
 
         Returns:
-            float: ``admin_datetime`` minus the next reference time (h). Range is ]-``self``.p, 0].
+            float: ``admin_datetime`` minus the next reference time (h). Range is [-``self``.p, 0[.
         """
         dt_next_t_r = datetime.combine(
             date(
