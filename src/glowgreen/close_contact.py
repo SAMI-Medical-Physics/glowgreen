@@ -135,7 +135,7 @@ class _ContactPattern:
                 width=self.c,
                 align="edge",
                 fill=True,
-                edgecolor="black",
+                edgecolor="None",
                 color=(0, 158 / 255, 115 / 255),
             )
             ax1.set_xlabel("24-hour time")
@@ -159,7 +159,7 @@ class _ContactPattern:
                 self.d ** (-3 / 2),
                 width=self.c,
                 align="edge",
-                edgecolor="black",
+                edgecolor="None",
                 color=(86 / 255, 180 / 255, 233 / 255),
                 fill=True,
             )
