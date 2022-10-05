@@ -23,6 +23,10 @@ For Linux:
 
     export PYTHONPATH="${PYTHONPATH}:/path/to/glowgreen-master/src/"
 
+Or us the .toml to install the package like this:
+
+    python -m pip install path\to\glowgreen-master\
+
 ## Testing
 
 Some tests can be ran using pytest.

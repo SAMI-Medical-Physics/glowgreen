@@ -6,7 +6,7 @@ build-backend = "hatchling.build"
 name = "glowgreen"
 version = "0.0.3"
 authors = [
-  { name="Jake Forster", email="Jake.Forster@sa.gov.au" },
+    { name="Jake Forster", email="Jake.Forster@sa.gov.au" },
 ]
 description = "Radiation dose from close contact with radioactive patients"
 readme = "README.md"
@@ -16,6 +16,12 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Topic :: Scientific/Engineering :: Medical Science Apps.",
+]
+dependencies = [
+    "numpy>=1.23.0",
+    "scipy>=1.9.1",
+    "matplotlib>=3.6.0",
+    "pandas>=1.5.0"
 ]
 
 [project.urls]
