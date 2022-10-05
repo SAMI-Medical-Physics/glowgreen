@@ -1,0 +1,23 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "glowgreen"
+version = "0.0.3"
+authors = [
+  { name="Jake Forster", email="Jake.Forster@sa.gov.au" },
+]
+description = "Radiation dose from close contact with radioactive patients"
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering :: Medical Science Apps.",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/SAMI-Medical-Physics/glowgreen"
+"Bug Tracker" = "https://github.com/SAMI-Medical-Physics/glowgreen/issues"
