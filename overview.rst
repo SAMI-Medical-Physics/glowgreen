@@ -16,14 +16,9 @@ At this stage, the clearance of radioactivity from the patient must be either ex
 Installation
 ************
 
-The package will (hopefully) be published on the Python Package Index (PyPI), then it can be installed using pip::
+Install the package from the Python Package Index (PyPI) using pip:
 
-    pip install glowgreen
-
-For now, acquire the source code somehow, then add the glowgreen-master\\src\\ directory to the PYTHONPATH environment variable. 
-For example, for Windows::
-
-    set PYTHONPATH=%PYTHONPATH%;\path\to\glowgreen-master\src\
+    python -m pip install glowgreen
 
 
 Example usage
@@ -173,7 +168,7 @@ See :ref:`API reference` for additional package features and more detailed infor
 
 Development
 ***********
-See `<https://github.com/SAMI-Medical-Physics/glowgreen>`_ 
+`<https://github.com/SAMI-Medical-Physics/glowgreen>`_ 
 
 
 Publications

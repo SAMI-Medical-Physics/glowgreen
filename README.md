@@ -75,6 +75,13 @@ glowgreen is Copyright (C) 2022 South Australia Medical Imaging.
 ## License
 MIT. See LICENSE file.
 
+## Publishing
+glowgreen is published on PyPi:
+
+https://pypi.org/project/glowgreen/
+
+See this [tutorial](https://packaging.python.org/en/latest/tutorials/packaging-projects/).
+
 ## Publications
 Papers that use glowgreen:
 * Close contact restriction periods for patients who received radioactive iodine-131 therapy for differentiated thyroid cancer, J. C. Forster et al., In preparation.
