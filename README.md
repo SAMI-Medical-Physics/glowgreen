@@ -40,8 +40,14 @@ Then in the **glowgreen-master** directory run:
     python -m pytest
 
 ## Documentation
-Documentation including API reference can be generated using sphinx. 
-If the **docs/source/** directory does not exist, see *HOWTO_documentation.md* to generate the documentation from scratch.
+Documentation including API reference can be found here: https://glowgreen.readthedocs.io
+
+### Build documentation locally
+
+Documentation is generated using sphinx.
+See this [tutorial](https://sphinx-rtd-tutorial.readthedocs.io/en/latest/read-the-docs.html). 
+
+If the **docs/source/** directory does not exist, see *howto_documentation.md* to generate the documentation from scratch.
 Otherwise, do the following:
 
 Check the project information is up-to-date in *docs/source/conf.py*.
@@ -57,8 +63,6 @@ In **docs** directory, run:
 
     make html
 
-The documentation is hosted on ReadTheDocs.
-See this [tutorial](https://sphinx-rtd-tutorial.readthedocs.io/en/latest/read-the-docs.html).
 
 ## Source 
 https://github.com/SAMI-Medical-Physics/glowgreen
