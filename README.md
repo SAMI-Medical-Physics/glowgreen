@@ -80,7 +80,7 @@ glowgreen is Copyright (C) 2022 South Australia Medical Imaging.
 MIT. See LICENSE file.
 
 ## Publishing
-glowgreen is published on PyPi:
+glowgreen is published on PyPI:
 
 https://pypi.org/project/glowgreen/
 
