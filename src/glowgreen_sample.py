@@ -38,4 +38,6 @@ from glowgreen import cs_restrictions
 num_treatments_in_year = 2
 df = cs_restrictions(cfit, num_treatments_in_year, admin_datetime)
 
-print(df[["name", "datetime_end"]])
+import pandas as pd
+with pd.option_context('display.max_colwidth', None):
+    print(df[["name", "datetime_end"]])

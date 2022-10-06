@@ -6,21 +6,29 @@ Follow these instructions to generate the documentation from scratch, which is r
 
 Install sphinx:
 
-    pip install sphinx
+    python -m pip install sphinx
 
 In the **docs** directory run
 
     sphinx-quickstart
 
-and follow the prompts.
+and follow the prompts, e.g.:
 
+    > Separate source and build directories (y/n) [n]: y
+    > Project name: glowgreen
+    > Author name(s): Jake Forster
+    > Project release []:
+
+Run *src/glowgreen_sample.py*.
+Save the figures in **docs/source** with filenames *docs_cpat.png* and *docs_cpat_dose.png*.
+Check the output still matches the content of *overview.rst*.
 Copy *overview.rst* into **docs/source/**.
-
-Run *src/glowgreen_sample.py* and save the figures in **docs/source** with filenames *docs_cpat.png* and *docs_cpat_dose.png*.
 
 ## Editing *conf.py*
 Add the following to *docs/source/conf.py*.
 At the top:
+
+    from glowgreen import __version__ as glowgreen_version
 
     import os
     import sys
@@ -28,9 +36,9 @@ At the top:
     sys.path.insert(0, os.path.abspath('../../src/'))
     sys.path.insert(0, os.path.abspath('../../src/glowgreen/'))
 
-Check the project information is up-to-date (e.g. version).
+Assign the copyright to SAMI.
 
-Further down, include:
+Further down, add:
 
     extensions = ['sphinx.ext.autodoc', 'sphinx.ext.napoleon']
 
