@@ -1,26 +1,34 @@
 # Instructions for generating documentation
 
-Follow these instructions to generate the documentation from scratch (e.g. if the docs/source/ directory does not exist).
+Follow these instructions to generate the documentation from scratch, which is required if the **docs/source/** directory does not exist.
 
 ## Setting up
 
 Install sphinx:
 
-    pip install sphinx
+    python -m pip install sphinx
 
-In the docs directory run
+In the **docs** directory run
 
     sphinx-quickstart
 
-and follow the prompts.
+and follow the prompts, e.g.:
 
-Copy overview.rst into docs/source/.
+    > Separate source and build directories (y/n) [n]: y
+    > Project name: glowgreen
+    > Author name(s): Jake Forster
+    > Project release []:
 
-Run src/glowgreen_sample.py and save the figures in docs/source with filenames docs_cpat.png and docs_cpat_dose.png.
+Run *src/glowgreen_sample.py*.
+Save the figures in **docs/source** with filenames *docs_cpat.png* and *docs_cpat_dose.png*.
+Check the output still matches the content of *overview.rst*.
+Copy *overview.rst* into **docs/source/**.
 
-## Editing conf.py
-Add the following to docs/source/conf.py.
+## Editing *conf.py*
+Add the following to *docs/source/conf.py*.
 At the top:
+
+    from glowgreen import __version__ as glowgreen_version
 
     import os
     import sys
@@ -28,11 +36,13 @@ At the top:
     sys.path.insert(0, os.path.abspath('../../src/'))
     sys.path.insert(0, os.path.abspath('../../src/glowgreen/'))
 
-And further down:
+Assign the copyright to SAMI.
+
+Further down, add:
 
     extensions = ['sphinx.ext.autodoc', 'sphinx.ext.napoleon']
 
-To document `__init__`:
+Document `__init__` by including:
 
     autoclass_content = 'both'
 
@@ -42,19 +52,19 @@ Choose this style:
 
 ## API reference
 
-In the docs directory run:
+In the **docs** directory run:
 
     sphinx-apidoc -o ./source ../src/glowgreen/ -e -M
 
-In index.rst, write 'overview', 'modules' under toctree
+In *index.rst*, write 'overview' and 'modules' under toctree
 
-Change heading in modules.rst to 'API reference'
+Change heading in *modules.rst* to 'API reference'
 and add '.. _API reference:' before the heading
 
-in glowgreen.close_contact.rst, write ':private-members: _ContactPattern' under automodule
+in *glowgreen.close_contact.rst*, write ':private-members: _ContactPattern' under automodule
 
 ## Finish
 
-In docs directory run:
+In **docs** directory run:
 
     make html

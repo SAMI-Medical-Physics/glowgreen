@@ -4,7 +4,7 @@ glowgreen
 Introduction
 ************
 
-``glowgreen`` is a Python package for calculating the radiation dose received by an individual 
+``glowgreen`` is a small Python package for calculating the radiation dose received by an individual 
 who shares a pattern of close contact with a radioactive person.
 Two kinds of contact patterns are supported: onceoff patterns and infinitely repeating diurnal patterns.
 The dose from the contact pattern can be calculated taking into account a period of delay 
@@ -143,25 +143,29 @@ along with appropriate dose constraints, using:
 
 Then we have::
 
-    >>> df[['name', 'datetime_end']]
-                                                     name               datetime_end
-    0                         Caring for infants (normal) 2021-12-31 23:00:00.000000
-    1              Caring for infants (demanding or sick) 2022-01-03 03:00:00.000000
-    2            Close contact with 2-5 year old children 2022-01-02 06:00:00.000000
-    3           Close contact with 5-15 year old children 2021-12-31 08:00:00.000000
-    4                     Sleeping with spouse or partner 2022-01-03 01:00:00.000000
-    5   Sleeping with pregnant spouse or partner, or c... 2022-01-03 01:00:00.000000
-    6    Sleeping with informed person supporting patient 2021-12-30 00:00:00.000000
-    7         Close contact with adult friends and family 2021-12-30 08:00:00.000000
-    8                   Close contact with pregnant women 2021-12-30 08:00:00.000000
-    9   Close contact with informed persons caring for... 2021-12-27 07:00:00.000000
-    10           Cinema, theatre visits; social functions 2021-12-27 15:00:00.000000
-    11            Daily public transport to and from work 2021-12-28 17:00:00.000000
-    12  Return to work involving prolonged close conta... 2021-12-29 09:00:00.000000
-    13  Return to work not involving prolonged close c... 2021-12-27 15:00:00.000000
-    14                 Work with radiosensitive materials 2021-12-31 16:00:00.000000
-    15                                   Return to school 2021-12-29 09:00:00.000000
-    16          A single 24-hour trip on public transport 2021-12-31 08:33:45.528190
+    >>> import pandas as pd
+    >>> with pd.option_context('display.max_colwidth', None):
+    ...     df[['name', 'datetime_end']]
+    ...
+                                                                                name               datetime_end
+    0                                                     Caring for infants (normal) 2021-12-31 23:00:00.000000
+    1                                          Caring for infants (demanding or sick) 2022-01-03 03:00:00.000000
+    2                     Prolonged close contact (>15min) with 2-5 year old children 2022-01-02 06:00:00.000000
+    3                    Prolonged close contact (>15min) with 5-15 year old children 2021-12-31 08:00:00.000000
+    4                       Sleeping with another person (includes pregnant or child) 2021-12-31 03:00:00.000000
+    5                                                Sleeping with informed supporter 2021-12-27 02:00:00.000000
+    6               Sleeping with person and prolonged daytime close contact (>15min) 2021-12-31 12:00:00.000000
+    7   Sleeping with informed supporter and prolonged daytime close contact (>15min) 2021-12-27 06:00:00.000000
+    8                  Prolonged close contact (>15min) with adult friends and family 2021-12-30 08:00:00.000000
+    9                            Prolonged close contact (>15min) with pregnant women 2021-12-30 08:00:00.000000
+    10      Prolonged close contact (>15min) with informed persons caring for patient 2021-12-27 07:00:00.000000
+    11                                       Cinema, theatre visits; social functions 2021-12-27 15:00:00.000000
+    12                                        Daily public transport to and from work 2021-12-28 17:00:00.000000
+    13          Return to work involving prolonged close contact (>15min) with others 2021-12-29 09:00:00.000000
+    14      Return to work not involving prolonged close contact (>15min) with others 2021-12-27 15:00:00.000000
+    15                                             Work with radiosensitive materials 2021-12-31 16:00:00.000000
+    16                                                               Return to school 2021-12-29 09:00:00.000000
+    17                                      A single 24-hour trip on public transport 2021-12-31 08:33:45.528190
 
 
 See :ref:`API reference` for additional package features and more detailed information.
@@ -169,4 +173,11 @@ See :ref:`API reference` for additional package features and more detailed infor
 
 Development
 ***********
-See `<https://github.com/JakeForster/glowgreen>`_ 
+See `<https://github.com/SAMI-Medical-Physics/glowgreen>`_ 
+
+
+Publications
+************
+Papers that use glowgreen:
+
+* Close contact restriction periods for patients who received radioactive iodine-131 therapy for differentiated thyroid cancer, J. C. Forster et al., In preparation.
