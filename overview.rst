@@ -4,7 +4,7 @@ glowgreen
 Introduction
 ************
 
-``glowgreen`` is a Python package for calculating the radiation dose received by an individual 
+``glowgreen`` is a small Python package for calculating the radiation dose received by an individual 
 who shares a pattern of close contact with a radioactive person.
 Two kinds of contact patterns are supported: onceoff patterns and infinitely repeating diurnal patterns.
 The dose from the contact pattern can be calculated taking into account a period of delay 
@@ -169,4 +169,10 @@ See :ref:`API reference` for additional package features and more detailed infor
 
 Development
 ***********
-See `<https://github.com/JakeForster/glowgreen>`_ 
+See `<https://github.com/SAMI-Medical-Physics/glowgreen>`_ 
+
+
+Publications
+************
+Papers that use glowgreen:
+* Close contact restriction periods for patients who received radioactive iodine-131 therapy for differentiated thyroid cancer, J. C. Forster et al., In preparation.
