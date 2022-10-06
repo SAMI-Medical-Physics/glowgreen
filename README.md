@@ -5,7 +5,7 @@ A small Python package for calculating radiation dose from close contact pattern
 - Python >= 3.9
 
 ## Installation
-Install the package from the Python Package Index (PyPI) using pip:
+Install the package from the [Python Package Index](https://pypi.org/) (PyPI) using pip:
 
     python -m pip install --upgrade glowgreen
 
@@ -58,7 +58,7 @@ In **docs** directory, run:
     make html
 
 The documentation is hosted on ReadTheDocs.
-See https://sphinx-rtd-tutorial.readthedocs.io/en/latest/read-the-docs.html.
+See this [tutorial](https://sphinx-rtd-tutorial.readthedocs.io/en/latest/read-the-docs.html).
 
 ## Source 
 https://github.com/SAMI-Medical-Physics/glowgreen
@@ -67,7 +67,7 @@ https://github.com/SAMI-Medical-Physics/glowgreen
 https://github.com/SAMI-Medical-Physics/glowgreen/issues
 
 ## Author
-Jake Forster (jake.forster@sa.gov.au)
+Jake Forster (Jake.Forster@sa.gov.au)
 
 ## Copyright
 glowgreen is Copyright (C) 2022 South Australia Medical Imaging.
