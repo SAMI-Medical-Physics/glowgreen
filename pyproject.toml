@@ -4,11 +4,11 @@ build-backend = "hatchling.build"
 
 [project]
 name = "glowgreen"
-version = "0.0.3"
+version = "0.0.4"
 authors = [
     { name="Jake Forster", email="Jake.Forster@sa.gov.au" },
 ]
-description = "Radiation dose from close contact patterns with radioactive patients"
+description = "Radiation dose from close contact patterns with radioactive patients."
 readme = "README.md"
 requires-python = ">=3.9"
 license = {file = "LICENSE"}
@@ -26,7 +26,7 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/SAMI-Medical-Physics/glowgreen"
+"Homepage" = "https://github.com/SAMI-Medical-Physics/glowgreen"
 "Bug Tracker" = "https://github.com/SAMI-Medical-Physics/glowgreen/issues"
-Documentation = "https://glowgreen.readthedocs.io"
-Changelog = "https://github.com/SAMI-Medical-Physics/glowgreen/CHANGELOG.md"
+"Documentation" = "https://glowgreen.readthedocs.io"
+"Changelog" = "https://github.com/SAMI-Medical-Physics/glowgreen/CHANGELOG.md"
