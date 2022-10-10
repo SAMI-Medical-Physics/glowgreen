@@ -5,6 +5,8 @@ c = [0.75, 3.5]  # Durations (h) of pattern elements
 d = [0.3, 1]  # Distances (m) of pattern elements
 cpat = ContactPatternRepeating(theta, c, d)
 
+import matplotlib.pyplot as plt
+plt.rcParams["figure.dpi"] = 200
 cpat.plot()
 
 from glowgreen import Clearance_1m

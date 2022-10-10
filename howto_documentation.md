@@ -4,7 +4,7 @@ Follow these instructions to generate the documentation from scratch, which is r
 
 ## Setting up
 
-Install sphinx:
+Install `sphinx`:
 
     python -m pip install sphinx
 
@@ -28,15 +28,21 @@ Copy *overview.rst* into **docs/source/**.
 Add the following to *docs/source/conf.py*.
 At the top:
 
-    from glowgreen import __version__ as glowgreen_version
-
+    import importlib.metadata
     import os
     import sys
+
+    GLOWGREEN_VERSION = importlib.metadata.version("glowgreen")
+
     sys.path.insert(0, os.path.abspath('../..'))
     sys.path.insert(0, os.path.abspath('../../src/'))
     sys.path.insert(0, os.path.abspath('../../src/glowgreen/'))
 
-Assign the copyright to SAMI.
+Assign the copyright to SAMI and edit the version:
+
+    release = GLOWGREEN_VERSION
+
+Note the current version of `glowgreen` must be installed for the version to appear correctly here. 
 
 Further down, add:
 
