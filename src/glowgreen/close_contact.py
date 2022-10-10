@@ -191,8 +191,8 @@ class _ContactPattern:
                 markeredgecolor="black",
             )
             ax2.plot(
-                tau_arr,
-                dose_constraint * np.ones(len(tau_arr)),
+                np.linspace(0, tau_arr[-1], num=50, endpoint=True),
+                dose_constraint * np.ones(50),
                 color=(204 / 255, 121 / 255, 167 / 255),
                 ls="--",
                 label="{:g} mSv".format(dose_constraint),
