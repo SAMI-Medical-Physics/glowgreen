@@ -20,3 +20,11 @@ Added restrictions that use this pattern for members of the public and informed 
 
 ### Changed
 - Plot method of contact pattern object, in particular the plot of the contact pattern: Changed from plotting the contact distance, d, on the vertical axis to plotting d^(-1.5). A secondary y-axis is shown on the right side of the plot with the corresponding d values.
+
+## [0.0.4] - 2022-10-11
+
+### Changed
+- Removed dunder version. Users should instead access the version by:  
+
+      import importlib.metadata
+      GLOWGREEN_VERSION = importlib.metadata.version("glowgreen")
