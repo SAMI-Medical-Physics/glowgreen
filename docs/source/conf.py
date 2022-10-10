@@ -6,11 +6,12 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-
-from glowgreen import __version__ as glowgreen_version
-
+import importlib.metadata
 import os
 import sys
+
+GLOWGREEN_VERSION = importlib.metadata.version("glowgreen")
+
 sys.path.insert(0, os.path.abspath('../..'))
 sys.path.insert(0, os.path.abspath('../../src/'))
 sys.path.insert(0, os.path.abspath('../../src/glowgreen/'))
@@ -18,7 +19,7 @@ sys.path.insert(0, os.path.abspath('../../src/glowgreen/'))
 project = 'glowgreen'
 copyright = '2022, South Australia Medical Imaging'
 author = 'Jake Forster'
-release = glowgreen_version
+release = GLOWGREEN_VERSION
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration

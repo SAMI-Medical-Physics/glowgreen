@@ -5,7 +5,7 @@ A small Python package for calculating radiation dose from close contact pattern
 - Python >= 3.9
 
 ## Installation
-Install the package from the [Python Package Index](https://pypi.org/) (PyPI) using pip:
+Install the package from the [Python Package Index](https://pypi.org/) (PyPI) using `pip`:
 
     python -m pip install --upgrade glowgreen
 
@@ -24,14 +24,16 @@ Another way is to add the **glowgreen-master\src** directory to the PYTHONPATH e
     set PYTHONPATH=%PYTHONPATH%;\path\to\glowgreen-master\src\
 
 ## Dependencies
-- Python packages
-    - numpy
-    - scipy
-    - matplotlib
-    - pandas
+Python packages:
+- `numpy` >= 1.21.4
+- `scipy` >= 1.7.3
+- `matplotlib` >= 3.5.0
+- `pandas` >= 1.3.4
+
+It has not been tested with earlier versions of these packages.
 
 ## Testing
-You can run some tests if there is a clone of the repository on your local computer. Install pytest:
+You can run some tests if there is a clone of the repository on your local computer. Install `pytest`:
 
     python -m pip install --upgrade pytest
 
@@ -44,7 +46,7 @@ Documentation including API reference can be found here: https://glowgreen.readt
 
 ### Build documentation locally
 
-Documentation is generated using sphinx.
+Documentation is generated using `sphinx`.
 See this [tutorial](https://sphinx-rtd-tutorial.readthedocs.io/en/latest/read-the-docs.html). 
 
 If the **docs/source/** directory does not exist, see *howto_documentation.md* to generate the documentation from scratch.
@@ -74,18 +76,18 @@ https://github.com/SAMI-Medical-Physics/glowgreen/issues
 Jake Forster (Jake.Forster@sa.gov.au)
 
 ## Copyright
-glowgreen is Copyright (C) 2022 South Australia Medical Imaging.
+`glowgreen` is Copyright (C) 2022 South Australia Medical Imaging.
 
 ## License
-MIT. See LICENSE file.
+MIT license. See LICENSE file.
 
 ## Publishing
-glowgreen is published on PyPI:
+`glowgreen` is published on PyPI:
 
 https://pypi.org/project/glowgreen/
 
 See this [tutorial](https://packaging.python.org/en/latest/tutorials/packaging-projects/).
 
 ## Publications
-Papers that use glowgreen:
-* Close contact restriction periods for patients who received radioactive iodine-131 therapy for differentiated thyroid cancer, J. C. Forster et al., In preparation.
+Papers that use `glowgreen`:
+- Close contact restriction periods for patients who received radioactive iodine-131 therapy for differentiated thyroid cancer, J. C. Forster et al., In preparation.
