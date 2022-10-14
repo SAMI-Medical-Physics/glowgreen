@@ -1,4 +1,4 @@
-# glowgreen 
+# glowgreen
 A small Python package for calculating radiation dose from close contact patterns with radioactive patients. 
 
 ## Requires
