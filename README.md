@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/546642261.svg)](https://zenodo.org/badge/latestdoi/546642261)
+
 # glowgreen
 A small Python package for calculating radiation dose from close contact patterns with radioactive patients. 
 
