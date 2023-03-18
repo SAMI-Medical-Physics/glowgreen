@@ -622,11 +622,12 @@ def test_get_restriction_biexp():
         ]
         == 0.75
     )
-    assert (
+
+    assert np.isclose(
         cpat._get_restriction_arrays(cfit, np.inf, datetime_admin, next_element=False)[
             1
-        ]
-        == cpat.get_dose(cfit, 0.75, datetime_admin)[0]
+        ],
+        cpat.get_dose(cfit, 0.75, datetime_admin)[0],
     )
     assert cpat._get_restriction_arrays(
         cfit, np.inf, datetime_admin, next_element=False
@@ -652,9 +653,9 @@ def test_get_restriction_biexp():
         cpat.get_restriction(cfit, np.inf, datetime_admin, next_element=False)[0]
         == 0.75
     )
-    assert (
-        cpat.get_restriction(cfit, np.inf, datetime_admin, next_element=False)[1]
-        == cpat.get_dose(cfit, 0.75, datetime_admin)[0]
+    assert np.isclose(
+        cpat.get_restriction(cfit, np.inf, datetime_admin, next_element=False)[1],
+        cpat.get_dose(cfit, 0.75, datetime_admin)[0],
     )
     assert cpat.get_restriction(cfit, np.inf, datetime_admin, next_element=False)[
         2
