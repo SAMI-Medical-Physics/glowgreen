@@ -24,7 +24,15 @@ Added restrictions that use this pattern for members of the public and informed 
 ## [0.0.4] - 2022-10-11
 
 ### Changed
-- Removed dunder version. Users should instead access the version by:  
+- Removed dunder version. Users should instead access the version by:
 
       import importlib.metadata
       GLOWGREEN_VERSION = importlib.metadata.version("glowgreen")
+
+## [0.1.0] - 2023-??-??
+
+### Changed
+- Contact patterns
+
+### Added
+- Support for weekly contact patterns

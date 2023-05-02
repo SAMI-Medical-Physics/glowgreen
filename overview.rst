@@ -173,6 +173,6 @@ Development
 
 Publications
 ************
-Papers that use glowgreen:
+Papers that use ``glowgreen``:
 
-* Close contact restriction periods for patients who received radioactive iodine-131 therapy for differentiated thyroid cancer, J. C. Forster et al., In preparation.
+* Forster JC, Badger D, Hickson KJ (2023) Close contact restriction periods for patients who have received iodine-131 therapy for differentiated thyroid cancer. J. Radiol. Prot. 43(2): 021501 (arXiv:2210.14065).
