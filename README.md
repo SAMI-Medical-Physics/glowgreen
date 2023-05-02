@@ -1,7 +1,5 @@
 [![DOI](https://zenodo.org/badge/546642261.svg)](https://zenodo.org/badge/latestdoi/546642261)
 
-Erin was here.
-
 # glowgreen
 A small Python package for calculating radiation dose from close contact patterns with radioactive patients. 
 
@@ -77,10 +75,11 @@ https://github.com/SAMI-Medical-Physics/glowgreen
 https://github.com/SAMI-Medical-Physics/glowgreen/issues
 
 ## Author
-Jake Forster (Jake.Forster@sa.gov.au)
+`glowgreen` was developed by Jake Forster with contributions from:
++ Erin Lukas
 
 ## Copyright
-`glowgreen` is Copyright (C) 2022 South Australia Medical Imaging.
+`glowgreen` is Copyright (c) 2022, 2023 South Australia Medical Imaging.
 
 ## License
 MIT license. See LICENSE file.
