@@ -455,6 +455,7 @@ class ContactPatternRepeating(_ContactPattern):
         theta_prime = self._if_neg_add_p(
             self.theta - phi
         )  # theta if the reference time was the end of the delay
+        # TODO Test if a weekly pattern will work if you change: self.theta -> self._shift_weekly_pattern(admin_datetime)
 
         arr = np.zeros(len(lmbda))
         for i in range(len(lmbda)):
