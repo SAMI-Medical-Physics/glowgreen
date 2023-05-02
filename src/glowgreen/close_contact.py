@@ -242,6 +242,7 @@ class ContactPatternRepeating(_ContactPattern):
         if self.repeat == "day":
             self.p = 24.0  # Pattern period (h)
         else:
+            assert self.repeat == "week"
             self.p = 168.0
 
         if isinstance(self.theta, (list, np.ndarray)):
@@ -388,7 +389,7 @@ class ContactPatternRepeating(_ContactPattern):
         """Shift the weekly pattern so it starts at 12 a.m. on the day
         of administration.
 
-        Weekly patterns are defined to start at 12 a.m. Monday
+        Weekly patterns are defined to start at 12 a.m. Monday.
         """
         assert self.repeat == "week"
         ref_datetime = datetime(
@@ -400,6 +401,16 @@ class ContactPatternRepeating(_ContactPattern):
         theta_shift -= hrs_shift
         theta_shift = np.array([t + self.p if t < 0 else t for t in theta_shift])
         return theta_shift
+
+    def _theta_wrt_12am_day_of_admin(self, admin_datetime: datetime):
+        """Shift the pattern so it starts at 12 a.m. on the day
+        of administration.
+        """
+        if self.repeat == "day":
+            return self.theta
+        else:
+            assert self.repeat == "week"
+            return self._shift_weekly_pattern(admin_datetime)
 
     def get_dose(
         self, cfit: clearance.Clearance_1m, tau, admin_datetime: datetime
@@ -454,9 +465,8 @@ class ContactPatternRepeating(_ContactPattern):
 
         phi = self._get_phi(admin_datetime, tau)
         theta_prime = self._if_neg_add_p(
-            self.theta - phi
+            self._theta_wrt_12am_day_of_admin(admin_datetime) - phi
         )  # theta if the reference time was the end of the delay
-        # TODO Test if a weekly pattern will work if you change: self.theta -> self._shift_weekly_pattern(admin_datetime)
 
         arr = np.zeros(len(lmbda))
         for i in range(len(lmbda)):
