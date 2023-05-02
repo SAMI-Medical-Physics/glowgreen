@@ -395,8 +395,10 @@ class ContactPatternRepeating(_ContactPattern):
         ) - timedelta(days=admin_datetime.weekday())
         hrs = (admin_datetime - ref_datetime).total_seconds() / 3600
         hrs_shift = 24 * np.floor(hrs / 24)
-        self.theta -= hrs_shift
-        self.theta = np.array([t + self.p if t < 0 else t for t in self.theta])
+        theta_shift = np.copy(self.theta)
+        theta_shift -= hrs_shift
+        theta_shift = np.array([t + self.p if t < 0 else t for t in theta_shift])
+        return theta_shift
 
     def get_dose(
         self, cfit: clearance.Clearance_1m, tau, admin_datetime: datetime
