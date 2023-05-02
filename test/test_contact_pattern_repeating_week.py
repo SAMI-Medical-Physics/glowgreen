@@ -4,9 +4,11 @@ import numpy as np
 
 
 def test_shift_weekly_pattern():
-    """single contact Tues 12 PM
-    admin at Wed 2 PM
-    -> after shift, contact starts at 156 h
+    """Test with single contact.
+
+    + single contact Tues 12 PM
+    + admin at Wed 2 PM
+    + -> after shift, contact starts at 156 h
     """
     theta = [36]
     c = [1]
@@ -18,9 +20,11 @@ def test_shift_weekly_pattern():
 
 
 def test_shift_weekly_pattern2():
-    """contact Tues 12 PM and Thurs 12 PM
-    admin at Wed 2 PM
-    -> after shift, contacts start at 156 h and 36 h
+    """Test with 2 contact elements, second gets split into 2.
+
+    + contact Tues 12 PM and Thurs 12 PM
+    + admin at Wed 2 PM
+    + -> after shift, contacts start at 156 h and 36 h
     """
     theta = [36, 84]
     c = [1, 2]

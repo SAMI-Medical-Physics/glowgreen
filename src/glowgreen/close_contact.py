@@ -390,6 +390,7 @@ class ContactPatternRepeating(_ContactPattern):
 
         Weekly patterns are defined to start at 12 a.m. Monday
         """
+        assert self.repeat == "week"
         ref_datetime = datetime(
             year=admin_datetime.year, month=admin_datetime.month, day=admin_datetime.day
         ) - timedelta(days=admin_datetime.weekday())
