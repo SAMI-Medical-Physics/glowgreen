@@ -211,7 +211,7 @@ class _ContactPattern:
 class ContactPatternRepeating(_ContactPattern):
     """Class for infinitely repeating diurnal contact patterns."""
 
-    def __init__(self, theta, c, d):
+    def __init__(self, theta, c, d, repeat="day"):
         """Constructor:
          * Calls constructor of :class:`_ContactPattern`.
          * ``theta``, ``c`` and ``d`` are converted into numpy.ndarrays if they were not supplied as such.
@@ -225,6 +225,7 @@ class ContactPatternRepeating(_ContactPattern):
                 i.e., distance from radioactive person for duration of pattern element.
 
         Raises:
+            ValueError: If ``repeat`` not "day" or "week"
             ValueError: If element of repeating pattern has ``d`` of 0 and ``c`` not 0.
             ValueError: If repeating pattern extends beyond pattern period (24 h).
         """
@@ -233,7 +234,15 @@ class ContactPatternRepeating(_ContactPattern):
         self.t_r = time(
             0, 0
         )  # Reference time (12 AM), which theta is defined with respect to.
-        self.p = 24.0  # Pattern period (h)
+
+        if repeat not in ["day", "week"]:
+            raise ValueError("repeat not 'day' or 'week'")
+        self.repeat = repeat
+
+        if self.repeat == "day":
+            self.p = 24.0  # Pattern period (h)
+        else:
+            self.p = 168.0
 
         if isinstance(self.theta, (list, np.ndarray)):
             if any(c_num != 0 and d_num == 0 for c_num, d_num in zip(self.c, self.d)):
@@ -374,6 +383,20 @@ class ContactPatternRepeating(_ContactPattern):
                 t_left = self.theta[i] + self.c[i] - phi
                 break
         return t_left
+
+    def _shift_weekly_pattern(self, admin_datetime: datetime):
+        """Shift the weekly pattern so it starts at 12 a.m. on the day
+        of administration.
+
+        Weekly patterns are defined to start at 12 a.m. Monday
+        """
+        ref_datetime = datetime(
+            year=admin_datetime.year, month=admin_datetime.month, day=admin_datetime.day
+        ) - timedelta(days=admin_datetime.weekday())
+        hrs = (admin_datetime - ref_datetime).total_seconds() / 3600
+        hrs_shift = 24 * np.floor(hrs / 24)
+        self.theta -= hrs_shift
+        self.theta = np.array([t + self.p if t < 0 else t for t in self.theta])
 
     def get_dose(
         self, cfit: clearance.Clearance_1m, tau, admin_datetime: datetime
