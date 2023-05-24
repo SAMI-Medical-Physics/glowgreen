@@ -589,13 +589,13 @@ class ContactPatternRepeating(_ContactPattern):
                 break
 
         datetime_end = admin_datetime + timedelta(hours=tau)
-        if next_element:
+        if next_element:  # TODO Handle weekly contact patterns
             for i in range(len(self.theta)):
                 theta_hr = int(np.floor(self.theta[i]))
                 theta_minute = int(np.floor((self.theta[i] - theta_hr) * 60.0))
                 theta_datetime = datetime.combine(
                     datetime_end.date(), time(hour=theta_hr, minute=theta_minute)
-                )
+                )  # theta_hr can be >23?
                 if theta_datetime == datetime_end:
                     break
                 elif theta_datetime > datetime_end:
@@ -681,7 +681,7 @@ class ContactPatternRepeating(_ContactPattern):
         datetime_end = (
             None if admin_datetime == None else admin_datetime + timedelta(hours=tau)
         )
-        if next_element:
+        if next_element:  # TODO this is largely repeating code
             for i in range(len(self.theta)):
                 theta_hr = int(np.floor(self.theta[i]))
                 theta_minute = int(np.floor((self.theta[i] - theta_hr) * 60.0))
