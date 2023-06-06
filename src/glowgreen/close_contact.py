@@ -1,4 +1,5 @@
 from datetime import datetime, date, time, timedelta
+from calendar import monthrange
 import numpy as np
 import warnings
 from . import clearance
@@ -139,20 +140,38 @@ class _ContactPattern:
                 color=(0, 158 / 255, 115 / 255),
             )
             ax1.set_xlabel("24-hour time")
-            ax1.set_xlim(left=0.0, right=24.0)
-            ax1.set_xticks(np.arange(0, 25, 1))
+            ax1.set_xlim(left=0.0, right=168.0)
+            if self.repeat == "day":
+                ax1.set_xlim(left=0.0, right=24.0)
+                ax1.set_xticks(np.arange(0, 24,1))
+            if self.repeat == "week":
+                ax1.set_xlim(left=0.0, right=168.0)
+                daylabel = ['MON','TUE','WED','THUR','FRI','SAT','SUN']
+                ax1.set_xticks(np.arange(0, 168, 24),labels=daylabel)
             y_up = ax1.get_ylim()[1]
             if admin_datetime is not None:
-                ax1.annotate(
-                    "ADMIN",
-                    xy=(admin_datetime.hour + admin_datetime.minute / 60.0, 0),
-                    xytext=(
-                        admin_datetime.hour + admin_datetime.minute / 60.0,
-                        0.2 * y_up,
-                    ),
-                    horizontalalignment="center",
-                    arrowprops={"arrowstyle": "->"},
-                )
+                if self.repeat == "day":
+                    ax1.annotate(
+                        "ADMIN",
+                        xy=(admin_datetime.hour + admin_datetime.minute / 60.0, 0),
+                        xytext=(
+                            admin_datetime.hour + admin_datetime.minute / 60.0,
+                            0.2 * y_up,
+                        ),
+                        horizontalalignment="center",
+                        arrowprops={"arrowstyle": "->"},
+                    )
+                if self.repeat == "week":
+                    ax1.annotate(
+                        "ADMIN",
+                        xy=(admin_datetime.weekday() * 24 + admin_datetime.hour + admin_datetime.minute / 60.0, 0),
+                        xytext=(
+                            admin_datetime.weekday() * 24 + admin_datetime.hour + admin_datetime.minute / 60.0,
+                            0.2 * y_up,
+                        ),
+                        horizontalalignment="center",
+                        arrowprops={"arrowstyle": "->"},
+                    )
         elif isinstance(self, ContactPatternOnceoff):
             ax1.bar(
                 self.theta,
@@ -257,7 +276,7 @@ class ContactPatternRepeating(_ContactPattern):
                 raise ValueError("element of repeating pattern has d of 0 and c not 0")
             if (self.theta + self.c) > self.p:
                 raise ValueError(
-                    "repeating pattern extends beyond pattern period (24 h)"
+                    "repeating pattern extends beyond pattern period (24 h for daily patterns and 168 h for weekly patterns)"
                 )
 
         self._graduate_pattern()
@@ -527,7 +546,7 @@ class ContactPatternRepeating(_ContactPattern):
         cfit: clearance.Clearance_1m,
         dose_constraint,
         admin_datetime: datetime,
-        next_element=True,
+        next_element=True
     ) -> tuple[float, float, datetime]:
         """Calculate the restriction period; i.e., the least time from administration
         (up to the resolution of the pattern element widths)
@@ -589,13 +608,32 @@ class ContactPatternRepeating(_ContactPattern):
                 break
 
         datetime_end = admin_datetime + timedelta(hours=tau)
-        if next_element:  # TODO Handle weekly contact patterns
+        if next_element:
             for i in range(len(self.theta)):
-                theta_hr = int(np.floor(self.theta[i]))
-                theta_minute = int(np.floor((self.theta[i] - theta_hr) * 60.0))
-                theta_datetime = datetime.combine(
-                    datetime_end.date(), time(hour=theta_hr, minute=theta_minute)
-                )  # theta_hr can be >23?
+                ####################################################################################
+                max_days = monthrange(datetime_end.year, datetime_end.month)
+                if self.theta[i] >= 24:
+                    theta_day = int(np.floor(self.theta[i] / 24))
+                    theta_hr  = int(np.floor(self.theta[i] - theta_day * 24))
+                    theta_minute = int(np.floor((self.theta[i] - theta_day * 24 - theta_hr) * 60.0))
+                    if (datetime_end.day + theta_day) > max_days[1]: ##rolls over to the next month:
+                        theta_month = int(np.floor(datetime_end.day + theta_day) / max_days[1])
+                        if (datetime_end.month + theta_month) > 12: ##rolls over to the next year:
+                            theta_year = int(np.floor(datetime_end.month + theta_month) / 12)
+                            theta_month -= 12 
+                        else:
+                            theta_year = 0
+                        theta_day = int(np.floor((datetime_end.day + theta_day) - max_days[1]))
+                        theta_datetime1 = date((datetime_end.year + theta_year),(datetime_end.month + theta_month),(theta_day))
+                        theta_datetime = datetime.combine(theta_datetime1,time(hour=theta_hr, minute=theta_minute))  
+                    else:
+                        theta_datetime1 = date(datetime_end.year,datetime_end.month,(datetime_end.day + theta_day))
+                        theta_datetime = datetime.combine(theta_datetime1,time(hour=theta_hr,minute=theta_minute))                        
+                else:   ## next contact period is within the same day
+                    theta_hr = int(np.floor(self.theta[i]))
+                    theta_minute = int(np.floor((self.theta[i] - theta_hr) * 60.0))    
+                    theta_datetime = datetime.combine(datetime_end.date(),time(hour=theta_hr, minute=theta_minute))
+                ######################################################################################
                 if theta_datetime == datetime_end:
                     break
                 elif theta_datetime > datetime_end:
@@ -620,7 +658,7 @@ class ContactPatternRepeating(_ContactPattern):
         cfit: clearance.Clearance_1m,
         dose_constraint,
         admin_datetime: datetime,
-        next_element=True,
+        next_element=True
     ) -> tuple[float, float, np.ndarray, np.ndarray, datetime]:
         """Arrive at the restriction period (at most 1 h longer than it needs to be)
         by calculating the lifetime dose for delays in 1 h steps, starting from administration
@@ -681,13 +719,32 @@ class ContactPatternRepeating(_ContactPattern):
         datetime_end = (
             None if admin_datetime == None else admin_datetime + timedelta(hours=tau)
         )
-        if next_element:  # TODO this is largely repeating code
+        if next_element:
             for i in range(len(self.theta)):
-                theta_hr = int(np.floor(self.theta[i]))
-                theta_minute = int(np.floor((self.theta[i] - theta_hr) * 60.0))
-                theta_datetime = datetime.combine(
-                    datetime_end.date(), time(hour=theta_hr, minute=theta_minute)
-                )
+                ####################################################################################
+                max_days = monthrange(datetime_end.year, datetime_end.month)
+                if self.theta[i] >=24:
+                    theta_day = int(np.floor(self.theta[i] / 24))
+                    theta_hr  = int(np.floor(self.theta[i] - theta_day * 24))
+                    theta_minute = int(np.floor((self.theta[i] - theta_day * 24 - theta_hr) * 60.0))
+                    if (datetime_end.day + theta_day) > max_days[1]: ##rolls over to the next month:
+                        theta_month = int(np.floor(datetime_end.day + theta_day) / max_days[1])
+                        if (datetime_end.month + theta_month) > 12: ##rolls over to the next year:
+                            theta_year = int(np.floor(datetime_end.month + theta_month) / 12)
+                            theta_month -= 12 
+                        else:
+                            theta_year = 0
+                        theta_day = int(np.floor((datetime_end.day + theta_day) - max_days[1]))
+                        theta_datetime1 = date((datetime_end.year + theta_year),(datetime_end.month + theta_month),(theta_day))
+                        theta_datetime = datetime.combine(theta_datetime1,time(hour=theta_hr, minute=theta_minute))  
+                    else:
+                        theta_datetime1 = date(datetime_end.year,datetime_end.month,(datetime_end.day + theta_day))
+                        theta_datetime = datetime.combine(theta_datetime1,time(hour=theta_hr,minute=theta_minute))                        
+                else:   ## next contact period is within the same day
+                    theta_hr = int(np.floor(self.theta[i]))
+                    theta_minute = int(np.floor((self.theta[i] - theta_hr) * 60.0))    
+                    theta_datetime = datetime.combine(datetime_end.date(),time(hour=theta_hr, minute=theta_minute)) 
+                ##################################################################################### 
                 if theta_datetime == datetime_end:
                     break
                 elif theta_datetime > datetime_end:
