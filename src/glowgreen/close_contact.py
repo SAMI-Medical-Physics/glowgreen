@@ -1,4 +1,5 @@
 from datetime import datetime, date, time, timedelta
+import calendar
 from calendar import monthrange
 import numpy as np
 import warnings
@@ -586,6 +587,7 @@ class ContactPatternRepeating(_ContactPattern):
         while dose > dose_constraint:  # and not np.isclose(dose, dose_constraint):
             # take larger steps using linear extrapolation
             delta_dose = self.get_dose(cfit, tau + 24.0, admin_datetime)[0] - dose
+            print(delta_dose)
             slope = delta_dose / 24.0
             intercept = dose - (slope * tau)
             new_tau = (dose_constraint - intercept) / slope
@@ -608,48 +610,45 @@ class ContactPatternRepeating(_ContactPattern):
                 break
 
         datetime_end = admin_datetime + timedelta(hours=tau)
+        print(calendar.day_name[admin_datetime.weekday()], admin_datetime)
+        print(calendar.day_name[datetime_end.weekday()], datetime_end)
         if next_element:
+            max_days = monthrange(datetime_end.year, datetime_end.month)
+            dayby_hr = datetime_end.weekday() * 24
+            hrof_end = dayby_hr + datetime_end.hour
             for i in range(len(self.theta)):
-                ####################################################################################
-                max_days = monthrange(datetime_end.year, datetime_end.month)
-                if self.theta[i] >= 24:
-                    theta_day = int(np.floor(self.theta[i] / 24))
-                    theta_hr  = int(np.floor(self.theta[i] - theta_day * 24))
-                    theta_minute = int(np.floor((self.theta[i] - theta_day * 24 - theta_hr) * 60.0))
-                    if (datetime_end.day + theta_day) > max_days[1]: ##rolls over to the next month:
-                        theta_month = int(np.floor(datetime_end.day + theta_day) / max_days[1])
-                        if (datetime_end.month + theta_month) > 12: ##rolls over to the next year:
-                            theta_year = int(np.floor(datetime_end.month + theta_month) / 12)
-                            theta_month -= 12 
-                        else:
-                            theta_year = 0
-                        theta_day = int(np.floor((datetime_end.day + theta_day) - max_days[1]))
-                        theta_datetime1 = date((datetime_end.year + theta_year),(datetime_end.month + theta_month),(theta_day))
-                        theta_datetime = datetime.combine(theta_datetime1,time(hour=theta_hr, minute=theta_minute))  
-                    else:
-                        theta_datetime1 = date(datetime_end.year,datetime_end.month,(datetime_end.day + theta_day))
-                        theta_datetime = datetime.combine(theta_datetime1,time(hour=theta_hr,minute=theta_minute))                        
-                else:   ## next contact period is within the same day
-                    theta_hr = int(np.floor(self.theta[i]))
-                    theta_minute = int(np.floor((self.theta[i] - theta_hr) * 60.0))    
-                    theta_datetime = datetime.combine(datetime_end.date(),time(hour=theta_hr, minute=theta_minute))
-                ######################################################################################
-                if theta_datetime == datetime_end:
+                if hrof_end in self.theta:
+                    print("No shift required.")
+                    noshift = True
+                    new_th = 0
                     break
-                elif theta_datetime > datetime_end:
-                    extra_t = (theta_datetime - datetime_end).total_seconds() / 3600
-                    tau += extra_t
-                    datetime_end = theta_datetime
+                elif hrof_end > self.theta[i]:
+                    noshift = False
+                    new_th = 0
+                    pass
+                elif hrof_end < self.theta[i]:
+                    noshift = False
+                    new_th = self.theta[i]
                     break
-                elif i == len(self.theta) - 1:
-                    theta_hr = int(np.floor(self.theta[0]))
-                    theta_minute = int(np.floor((self.theta[0] - theta_hr) * 60.0))
-                    theta_datetime = datetime.combine(
-                        datetime_end.date(), time(hour=theta_hr, minute=theta_minute)
-                    ) + timedelta(days=1)
-                    extra_t = (theta_datetime - datetime_end).total_seconds() / 3600
-                    tau += extra_t
-                    datetime_end = theta_datetime
+            if new_th == 0:  # over the week
+                new_th = self.theta[0] + 168
+            if noshift == False: # to shift the end of restriction to next contact time
+                theta_day = int(np.floor(new_th / 24))
+                new_day = (theta_day - datetime_end.weekday() + datetime_end.day)
+                if new_day > max_days[1]:  ## rolling over to the next month
+                    theta_month = int(np.floor(new_day) / max_days[1])
+                    new_month = theta_month + datetime_end.month
+                    new_day -= max_days[1]
+                else:
+                    new_month = datetime_end.month
+                if new_month > 12:  ## rolling over to the next year
+                    theta_year = int(np.floor(new_month) / 12)
+                    new_year = theta_year + datetime_end.year
+                    new_month -= 12
+                else:
+                    new_year = datetime_end.year
+                new_hour = int(new_th - theta_day * 24)
+                datetime_end = datetime(year=new_year,month=new_month,day=new_day,hour=new_hour,minute=0)
 
         return tau, dose, datetime_end
 
@@ -720,51 +719,42 @@ class ContactPatternRepeating(_ContactPattern):
             None if admin_datetime == None else admin_datetime + timedelta(hours=tau)
         )
         if next_element:
+            max_days = monthrange(datetime_end.year, datetime_end.month)
+            dayby_hr = datetime_end.weekday() * 24
+            hrof_end = dayby_hr + datetime_end.hour
             for i in range(len(self.theta)):
-                ####################################################################################
-                max_days = monthrange(datetime_end.year, datetime_end.month)
-                if self.theta[i] >=24:
-                    theta_day = int(np.floor(self.theta[i] / 24))
-                    theta_hr  = int(np.floor(self.theta[i] - theta_day * 24))
-                    theta_minute = int(np.floor((self.theta[i] - theta_day * 24 - theta_hr) * 60.0))
-                    if (datetime_end.day + theta_day) > max_days[1]: ##rolls over to the next month:
-                        theta_month = int(np.floor(datetime_end.day + theta_day) / max_days[1])
-                        if (datetime_end.month + theta_month) > 12: ##rolls over to the next year:
-                            theta_year = int(np.floor(datetime_end.month + theta_month) / 12)
-                            theta_month -= 12 
-                        else:
-                            theta_year = 0
-                        theta_day = int(np.floor((datetime_end.day + theta_day) - max_days[1]))
-                        theta_datetime1 = date((datetime_end.year + theta_year),(datetime_end.month + theta_month),(theta_day))
-                        theta_datetime = datetime.combine(theta_datetime1,time(hour=theta_hr, minute=theta_minute))  
-                    else:
-                        theta_datetime1 = date(datetime_end.year,datetime_end.month,(datetime_end.day + theta_day))
-                        theta_datetime = datetime.combine(theta_datetime1,time(hour=theta_hr,minute=theta_minute))                        
-                else:   ## next contact period is within the same day
-                    theta_hr = int(np.floor(self.theta[i]))
-                    theta_minute = int(np.floor((self.theta[i] - theta_hr) * 60.0))    
-                    theta_datetime = datetime.combine(datetime_end.date(),time(hour=theta_hr, minute=theta_minute)) 
-                ##################################################################################### 
-                if theta_datetime == datetime_end:
+                if hrof_end in self.theta:
+                    print("No shift required.")
+                    noshift = True
+                    new_th = 0
                     break
-                elif theta_datetime > datetime_end:
-                    extra_t = (theta_datetime - datetime_end).total_seconds() / 3600
-                    tau += extra_t
-                    tau_arr.append(tau)
-                    dose_arr.append(dose)
-                    datetime_end = theta_datetime
+                elif hrof_end > self.theta[i]:
+                    noshift = False
+                    new_th = 0
+                    pass
+                elif hrof_end < self.theta[i]:
+                    noshift = False
+                    new_th = self.theta[i]
                     break
-                elif i == len(self.theta) - 1:
-                    theta_hr = int(np.floor(self.theta[0]))
-                    theta_minute = int(np.floor((self.theta[0] - theta_hr) * 60.0))
-                    theta_datetime = datetime.combine(
-                        datetime_end.date(), time(hour=theta_hr, minute=theta_minute)
-                    ) + timedelta(days=1)
-                    extra_t = (theta_datetime - datetime_end).total_seconds() / 3600
-                    tau += extra_t
-                    tau_arr.append(tau)
-                    dose_arr.append(dose)
-                    datetime_end = theta_datetime
+            if new_th == 0:  # over the week
+                new_th = self.theta[0] + 168
+            if noshift == False: # to shift the end of restriction to next contact time
+                theta_day = int(np.floor(new_th / 24))
+                new_day = (theta_day - datetime_end.weekday() + datetime_end.day)
+                if new_day > max_days[1]:  ## rolling over to the next month
+                    theta_month = int(np.floor(new_day) / max_days[1])
+                    new_month = theta_month + datetime_end.month
+                    new_day -= max_days[1]
+                else:
+                    new_month = datetime_end.month
+                if new_month > 12:  ## rolling over to the next year
+                    theta_year = int(np.floor(new_month) / 12)
+                    new_year = theta_year + datetime_end.year
+                    new_month -= 12
+                else:
+                    new_year = datetime_end.year
+                new_hour = int(new_th - theta_day * 24)
+                datetime_end = datetime(year=new_year,month=new_month,day=new_day,hour=new_hour,minute=0)
 
         return tau, dose, np.array(tau_arr), np.array(dose_arr), datetime_end
 
