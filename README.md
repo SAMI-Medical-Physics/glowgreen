@@ -74,11 +74,12 @@ https://github.com/SAMI-Medical-Physics/glowgreen
 ## Bug tracker
 https://github.com/SAMI-Medical-Physics/glowgreen/issues
 
-## Author
-Jake Forster (Jake.Forster@sa.gov.au)
+## Authors
+- Jake Forster (Jake.Forster@sa.gov.au)
+- Erin Lukas (Erin.Lukas@sa.gov.au)
 
 ## Copyright
-`glowgreen` is Copyright (C) 2022 South Australia Medical Imaging.
+`glowgreen` is Copyright (C) 2022, 2023 South Australia Medical Imaging.
 
 ## License
 MIT license. See LICENSE file.
