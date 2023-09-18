@@ -28,3 +28,9 @@ Added restrictions that use this pattern for members of the public and informed 
 
       import importlib.metadata
       GLOWGREEN_VERSION = importlib.metadata.version("glowgreen")
+
+## [0.1.0] - 2023-09-18
+
+### Changed
+- Made changes to several contact patterns. Most notably, contact distances of 0.1 m were changed to 0.3 m.
+
