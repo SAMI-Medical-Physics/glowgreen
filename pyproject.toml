@@ -1,3 +1,10 @@
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = "-ra -q"
+testpaths = [
+"test",
+]
+
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
