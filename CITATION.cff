@@ -34,6 +34,9 @@ preferred-citation:
   start: 021501
 identifiers:
 - type: doi
+  value: 10.5281/zenodo.14942391
+  description: "Zenodo DOI for version 0.1.1"
+- type: doi
   value: 10.5281/zenodo.8353904
   description: "Zenodo DOI for version 0.1.0"
 - type: doi
