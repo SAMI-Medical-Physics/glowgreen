@@ -17,7 +17,7 @@ sys.path.insert(0, os.path.abspath("../../src/"))
 sys.path.insert(0, os.path.abspath("../../src/glowgreen/"))
 
 project = "glowgreen"
-copyright = "2022-2023, South Australia Medical Imaging"
+copyright = "2022, 2023, 2025 South Australia Medical Imaging"
 author = "Jake Forster, Erin Lukas"
 release = GLOWGREEN_VERSION
 

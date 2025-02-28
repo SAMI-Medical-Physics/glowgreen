@@ -33,7 +33,7 @@ Added restrictions that use this pattern for members of the public and informed 
 ### Changed
 - Made changes to several contact patterns. Most notably, contact distances of 0.1 m were changed to 0.3 m.
 
-## [0.1.1] - 2025-02-xx
+## [0.1.1] - 2025-02-28
 
 ### Changed
 - Updated dependency constraint to allow NumPy version 2.

@@ -81,7 +81,7 @@ https://github.com/SAMI-Medical-Physics/glowgreen/issues
 - Erin Lukas (Erin.Lukas@sa.gov.au)
 
 ## Copyright
-`glowgreen` is Copyright (C) 2022, 2023 South Australia Medical Imaging.
+`glowgreen` is Copyright (C) 2022, 2023, 2025 South Australia Medical Imaging.
 
 ## License
 MIT license. See LICENSE file.
