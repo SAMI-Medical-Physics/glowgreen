@@ -4,14 +4,14 @@ glowgreen
 Introduction
 ************
 
-``glowgreen`` is a small Python package for calculating the radiation dose received by an individual 
+``glowgreen`` is a Python package for calculating the radiation dose received by an individual 
 who shares a pattern of close contact with a radioactive person.
 Two kinds of contact patterns are supported: onceoff patterns and infinitely repeating diurnal patterns.
 The dose from the contact pattern can be calculated taking into account a period of delay 
 from the time of administration of the radioactive substance to when the contact pattern is started or resumed.
 A method is also provided to calculate the shortest delay required to satisfy a given dose constraint, 
 referred to as the restriction period.
-At this stage, the clearance of radioactivity from the patient must be either exponential or biexponential.
+The clearance of radioactivity from the patient can be modelled as either exponential or biexponential.
 
 Installation
 ************
@@ -125,8 +125,7 @@ Generate a plot of the lifetime dose as a function of the delay period by supply
 
 Standard contact patterns
 #########################
-Restriction periods can be calculated for the "real-world" contact patterns published by 
-`Cormack & Shearer <https://iopscience.iop.org/article/10.1088/0031-9155/43/3/003>`_,
+Restriction periods can be calculated for a collection of "real-world" contact patterns (modified from `Cormack & Shearer <https://iopscience.iop.org/article/10.1088/0031-9155/43/3/003>`_),
 along with appropriate dose constraints, using:
 
 .. code-block:: python
@@ -143,18 +142,18 @@ Then we have::
     ...     df[['name', 'datetime_end']]
     ...
                                                                                 name               datetime_end
-    0                                                     Caring for infants (normal) 2021-12-31 23:00:00.000000
-    1                                          Caring for infants (demanding or sick) 2022-01-03 03:00:00.000000
-    2                     Prolonged close contact (>15min) with 2-5 year old children 2022-01-02 06:00:00.000000
-    3                    Prolonged close contact (>15min) with 5-15 year old children 2021-12-31 08:00:00.000000
+    0                                                     Caring for infants (normal) 2021-12-29 16:00:00.000000
+    1                                          Caring for infants (demanding or sick) 2021-12-31 07:00:00.000000
+    2                     Prolonged close contact (>15min) with 2-5 year old children 2021-12-30 06:00:00.000000
+    3                    Prolonged close contact (>15min) with 5-15 year old children 2021-12-29 06:00:00.000000
     4                       Sleeping with another person (includes pregnant or child) 2021-12-31 03:00:00.000000
     5                                                Sleeping with informed supporter 2021-12-27 02:00:00.000000
     6               Sleeping with person and prolonged daytime close contact (>15min) 2021-12-31 12:00:00.000000
     7   Sleeping with informed supporter and prolonged daytime close contact (>15min) 2021-12-27 06:00:00.000000
-    8                  Prolonged close contact (>15min) with adult friends and family 2021-12-30 08:00:00.000000
-    9                            Prolonged close contact (>15min) with pregnant women 2021-12-30 08:00:00.000000
-    10      Prolonged close contact (>15min) with informed persons caring for patient 2021-12-27 07:00:00.000000
-    11                                       Cinema, theatre visits; social functions 2021-12-27 15:00:00.000000
+    8                   Prolonged close contact (>15min) with adult household members 2021-12-29 12:00:00.000000
+    9                Prolonged close contact (>15min) with pregnant household members 2021-12-29 12:00:00.000000
+    10      Prolonged close contact (>15min) with informed persons caring for patient 2021-12-25 11:00:00.000000
+    11                                Cinema, theatre visits; social functions/visits 2021-12-28 09:00:00.000000
     12                                        Daily public transport to and from work 2021-12-28 17:00:00.000000
     13          Return to work involving prolonged close contact (>15min) with others 2021-12-29 09:00:00.000000
     14      Return to work not involving prolonged close contact (>15min) with others 2021-12-27 15:00:00.000000
@@ -175,4 +174,4 @@ Publications
 ************
 Papers that use glowgreen:
 
-* Close contact restriction periods for patients who received radioactive iodine-131 therapy for differentiated thyroid cancer, J. C. Forster et al., In preparation.
+* Forster JC et al. "Close contact restriction periods for patients who have received iodine-131 therapy for differentiated thyroid cancer." J Radiol Prot. 2023;43(2):021501. doi: 10.1088/1361-6498/acc4d0.
