@@ -36,4 +36,5 @@ Added restrictions that use this pattern for members of the public and informed 
 ## [0.1.1] - 2025-02-28
 
 ### Changed
+- Updated dependency constraint to allow Python versions >3.11.
 - Updated dependency constraint to allow NumPy version 2.
